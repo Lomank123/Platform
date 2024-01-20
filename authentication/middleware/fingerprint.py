@@ -1,17 +1,15 @@
 import logging
 
-from django.http import JsonResponse
-from django.utils import timezone
 import jwt
 
 from django.conf import settings
+from django.http import JsonResponse
 
-from django.contrib.auth import get_user_model
 from jwt import PyJWTError
+from rest_framework import status
 
-# from rest_framework_simplejwt.authentication import JWTAuthentication
-
-logger = logging.getLogger(__name__)
+from authentication.exceptions import FingerprintException
+from authentication.services import FingerprintService
 
 
 class FingerprintMiddleware(object):
@@ -19,47 +17,36 @@ class FingerprintMiddleware(object):
         self.get_response = get_response
 
     def __call__(self, request):
-        # Code to be executed for each request before
-        # the view (and later middleware) are called.
-        start_time = timezone.now()
-
         is_auth_required_request = not any(
             request.path.startswith(path) for path in settings.AUTH_EXCLUDED_PATHS
         )
 
         if is_auth_required_request:
             try:
-                token = request.META.get("HTTP_AUTHORIZATION").split(" ")[1]
                 algorithms = [settings.SIMPLE_JWT.get("ALGORITHM")]
-            except Exception as ex:
-                logger.exception(ex)
+                access_token = request.META.get("HTTP_AUTHORIZATION").split(" ")[1]
+                payload = jwt.decode(
+                    access_token, settings.SECRET_KEY, algorithms=algorithms
+                )
+                fingerprint_service = FingerprintService()
+                fingerprint_service.verify_fingerprint(request, payload)
+            except PyJWTError as ex:
                 return JsonResponse(
-                    {"error": "Authorization error occurred"}, status=403
+                    data={"error": str(ex)},
+                    status=status.HTTP_403_FORBIDDEN,
+                )
+            except FingerprintException as ex:
+                return JsonResponse(
+                    data={"error": str(ex)},
+                    status=status.HTTP_403_FORBIDDEN,
+                )
+            except Exception as ex:
+                logging.exception(ex)
+                return JsonResponse(
+                    data={"error": "Authorization error occurred"},
+                    status=status.HTTP_403_FORBIDDEN,
                 )
 
-            try:
-                payload = jwt.decode(token, settings.SECRET_KEY, algorithms=algorithms)
-            except PyJWTError as ex:
-                logger.exception(ex)
-                return JsonResponse({"error": str(ex)}, status=403)
-
-            user_model = get_user_model()
-            user_id = payload.get("user_id")
-
-            try:
-                user = user_model.objects.get(id=user_id)
-            except user_model.DoesNotExist:
-                return JsonResponse({"error": "User not found"}, status=404)
-
-            logger.warning(payload)
-            logger.warning(user)
-
-        # Call
         response = self.get_response(request)
-
-        # Code to be executed for each request/response after
-        # the view is called.
-        total_time = timezone.now() - start_time
-        logger.warning(f"Time taken: {total_time.total_seconds()} seconds")
 
         return response

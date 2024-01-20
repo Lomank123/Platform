@@ -140,11 +140,23 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     "ALGORITHM": "HS256",
-    "TOKEN_OBTAIN_SERIALIZER": "authentication.serializers.FingerprintTokenObtainPairSerializer",
 }
 
+
+# JWT Fingerprint
 
 # These paths are excluded from fingerprint checks
 AUTH_EXCLUDED_PATHS = [
     "/api/token",
+    "/admin",
 ]
+
+JWT_FINGERPRINT = {
+    "FINGERPRINT_COOKIE_NAME": os.environ.get(
+        "FINGERPRINT_COOKIE_NAME", "JWT-FINGERPRINT"
+    ),
+    "FINGERPRINT_COOKIE_MAX_AGE_IN_DAYS": int(
+        os.environ.get("FINGERPRINT_COOKIE_MAX_AGE_IN_DAYS", 90),
+    ),
+    "FINGERPRINT_COOKIE_DOMAIN": os.environ.get("FINGERPRINT_COOKIE_DOMAIN"),
+}
