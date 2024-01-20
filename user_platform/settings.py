@@ -148,15 +148,12 @@ SIMPLE_JWT = {
 # These paths are excluded from fingerprint checks
 AUTH_EXCLUDED_PATHS = [
     "/api/token",
-    "/admin",
 ]
 
-JWT_FINGERPRINT = {
-    "FINGERPRINT_COOKIE_NAME": os.environ.get(
-        "FINGERPRINT_COOKIE_NAME", "JWT-FINGERPRINT"
-    ),
-    "FINGERPRINT_COOKIE_MAX_AGE_IN_DAYS": int(
-        os.environ.get("FINGERPRINT_COOKIE_MAX_AGE_IN_DAYS", 90),
-    ),
-    "FINGERPRINT_COOKIE_DOMAIN": os.environ.get("FINGERPRINT_COOKIE_DOMAIN"),
-}
+FINGERPRINT_COOKIE_NAME = os.environ.get("FINGERPRINT_COOKIE_NAME", "JWT-FINGERPRINT")
+FINGERPRINT_COOKIE_MAX_AGE_IN_DAYS = int(
+    os.environ.get("FINGERPRINT_COOKIE_MAX_AGE_IN_DAYS", 90),
+)
+FINGERPRINT_COOKIE_DOMAIN = os.environ.get(
+    "FINGERPRINT_COOKIE_DOMAIN",
+)

@@ -34,12 +34,10 @@ class FingerprintTokenObtainPairView(TokenViewBase):
 
         response = Response(serializer.validated_data, status=status.HTTP_200_OK)
         response.set_cookie(
-            key=settings.JWT_FINGERPRINT.get("FINGERPRINT_COOKIE_NAME"),
+            key=settings.FINGERPRINT_COOKIE_NAME,
             value=fingerprint,
-            max_age=timedelta(
-                days=settings.JWT_FINGERPRINT.get("FINGERPRINT_COOKIE_MAX_AGE_IN_DAYS")
-            ),
-            domain=settings.JWT_FINGERPRINT.get("FINGERPRINT_COOKIE_DOMAIN"),
+            max_age=timedelta(days=settings.FINGERPRINT_COOKIE_MAX_AGE_IN_DAYS),
+            domain=settings.FINGERPRINT_COOKIE_DOMAIN,
             secure=not settings.DEBUG,
             httponly=True,
             samesite="strict",

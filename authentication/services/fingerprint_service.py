@@ -27,9 +27,7 @@ class FingerprintService:
         Compare fingerprint hash from token payload and calculated hash from cookie.
         Raises FingerprintException if not they don't match.
         """
-        cookie_fingerprint = request.COOKIES.get(
-            settings.JWT_FINGERPRINT.get("FINGERPRINT_COOKIE_NAME")
-        )
+        cookie_fingerprint = request.COOKIES.get(settings.FINGERPRINT_COOKIE_NAME)
         payload_fingerprint_hash = payload.get("fingerprint_hash")
 
         if not cookie_fingerprint:
