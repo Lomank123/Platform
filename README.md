@@ -40,3 +40,13 @@ python manage.py migrate
 ```shell
 python manage.py runserver
 ```
+
+
+## Utilities
+
+- To clear all blacklisted refresh tokens which have expired:
+
+```shell
+python manage.py flushexpiredtokens
+```
+
