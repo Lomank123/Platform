@@ -7,10 +7,14 @@ from authentication.views.fingerprint_token_refresh_view import (
 from authentication.views.fingerprint_token_black_list_view import (
     FingerprintTokenBlackListView,
 )
+from authentication.views.fingerprint_token_verify_view import (
+    FingerprintTokenVerifyView,
+)
 
 
 __all__ = [
     "FingerprintTokenObtainPairView",
     "FingerprintTokenRefreshView",
     "FingerprintTokenBlackListView",
+    "FingerprintTokenVerifyView",
 ]
