@@ -17,12 +17,8 @@ class FingerprintTokenObtainPairView(TokenViewBase):
         fingerprint_service = FingerprintService()
         fingerprint = fingerprint_service.generate_fingerprint()
         fingerprint_hash = fingerprint_service.calculate_fingerprint_hash(fingerprint)
-        data = {
-            "fingerprint_hash": fingerprint_hash,
-            **request.data,
-        }
         serializer = self.get_serializer(
-            data=data,
+            data=request.data,
             context={"fingerprint_hash": fingerprint_hash},
         )
 

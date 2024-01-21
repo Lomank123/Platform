@@ -33,18 +33,18 @@ class FingerprintMiddleware(object):
             except PyJWTError as ex:
                 return JsonResponse(
                     data={"error": str(ex)},
-                    status=status.HTTP_403_FORBIDDEN,
+                    status=status.HTTP_401_UNAUTHORIZED,
                 )
             except FingerprintException as ex:
                 return JsonResponse(
                     data={"error": str(ex)},
-                    status=status.HTTP_403_FORBIDDEN,
+                    status=status.HTTP_401_UNAUTHORIZED,
                 )
             except Exception as ex:
-                logging.exception(ex)
+                logging.error(ex)
                 return JsonResponse(
                     data={"error": "Authorization error occurred"},
-                    status=status.HTTP_403_FORBIDDEN,
+                    status=status.HTTP_401_UNAUTHORIZED,
                 )
 
         response = self.get_response(request)

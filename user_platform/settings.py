@@ -133,8 +133,12 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(
+        minutes=int(os.environ.get("ACCESS_TOKEN_LIFETIME_IN_MINUTES", 5))
+    ),
+    "REFRESH_TOKEN_LIFETIME": timedelta(
+        days=int(os.environ.get("REFRESH_TOKEN_LIFETIME_IN_DAYS", 7))
+    ),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
     "AUTH_HEADER_TYPES": ("Bearer",),
@@ -152,7 +156,7 @@ AUTH_EXCLUDED_PATHS = [
 
 FINGERPRINT_COOKIE_NAME = os.environ.get("FINGERPRINT_COOKIE_NAME", "JWT-FINGERPRINT")
 FINGERPRINT_COOKIE_MAX_AGE_IN_DAYS = int(
-    os.environ.get("FINGERPRINT_COOKIE_MAX_AGE_IN_DAYS", 90),
+    os.environ.get("FINGERPRINT_COOKIE_MAX_AGE_IN_DAYS", 7),
 )
 FINGERPRINT_COOKIE_DOMAIN = os.environ.get(
     "FINGERPRINT_COOKIE_DOMAIN",
