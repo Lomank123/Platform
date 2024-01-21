@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # 3rd party
     "rest_framework",
+    "rest_framework_simplejwt.token_blacklist",
     # Local
     "users",
     "api",
@@ -140,7 +141,7 @@ SIMPLE_JWT = {
         days=int(os.environ.get("REFRESH_TOKEN_LIFETIME_IN_DAYS", 7))
     ),
     "ROTATE_REFRESH_TOKENS": False,
-    "BLACKLIST_AFTER_ROTATION": False,
+    "BLACKLIST_AFTER_ROTATION": True,
     "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     "ALGORITHM": "HS256",
@@ -152,6 +153,7 @@ SIMPLE_JWT = {
 # These paths are excluded from fingerprint checks
 AUTH_EXCLUDED_PATHS = [
     "/api/token",
+    "/admin",
 ]
 
 FINGERPRINT_COOKIE_NAME = os.environ.get("FINGERPRINT_COOKIE_NAME", "JWT-FINGERPRINT")
