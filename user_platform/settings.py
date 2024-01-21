@@ -152,7 +152,7 @@ SIMPLE_JWT = {
 
 # These paths are excluded from fingerprint checks
 AUTH_EXCLUDED_PATHS = [
-    "/api/token",
+    "/api/auth",
     "/admin",
 ]
 

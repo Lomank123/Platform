@@ -6,6 +6,6 @@ from api.views import TestView
 app_name = "api"
 
 urlpatterns = [
-    path("token/", include("authentication.urls")),
+    path("auth/", include("authentication.urls")),
     path("test/", TestView.as_view(), name="test"),
 ]
