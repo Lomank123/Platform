@@ -8,6 +8,12 @@ from django.conf import settings
 
 
 class FingerprintTokenBlackListView(GenericAPIView):
+    """
+    The reason we inherit from GenericAPIView
+    instead of TokenBaseView is that with
+    the latter class permissions won't work as intended.
+    """
+
     permission_classes = (IsAuthenticated,)
     serializer_class = TokenBlacklistSerializer
 

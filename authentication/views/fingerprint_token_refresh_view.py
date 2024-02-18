@@ -1,5 +1,3 @@
-import logging
-
 import jwt
 from django.conf import settings
 from rest_framework import status
@@ -17,6 +15,14 @@ class FingerprintTokenRefreshView(TokenViewBase):
     """
     This implementation does not support
     refresh token rotation due to fingerprint.
+
+    To protect refresh endpoint we need
+    to retrieve one of the expired access tokens,
+    extract fingerprint hash from the payload
+    and compare it with cookie hash.
+
+    The reason we use outdated access token
+    is that we can still verify its signature.
     """
 
     serializer_class = FingerprintTokenRefreshSerializer
@@ -54,8 +60,7 @@ class FingerprintTokenRefreshView(TokenViewBase):
                 algorithms=[settings.SIMPLE_JWT.get("ALGORITHM")],
                 options={"verify_exp": False},
             )
-        except Exception as ex:
-            logging.exception(ex)
+        except Exception:
             raise InvalidToken("Invalid access token")
 
     @staticmethod
