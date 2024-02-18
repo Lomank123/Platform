@@ -50,8 +50,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # Custom middlewares
-    "authentication.middleware.fingerprint.FingerprintMiddleware",
 ]
 
 ROOT_URLCONF = "user_platform.urls"
@@ -129,7 +127,7 @@ DJANGO_SUPERUSER_PASSWORD = os.environ.get("DJANGO_SUPERUSER_PASSWORD", "12345")
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "authentication.backends.jwt_fingerprint_authentication.JWTFingerprintAuthentication",
     ),
 }
 
@@ -149,12 +147,6 @@ SIMPLE_JWT = {
 
 
 # JWT Fingerprint
-
-# These paths are excluded from fingerprint checks
-AUTH_EXCLUDED_PATHS = [
-    "/api/auth",
-    "/admin",
-]
 
 FINGERPRINT_COOKIE_NAME = os.environ.get("FINGERPRINT_COOKIE_NAME", "JWT-FINGERPRINT")
 FINGERPRINT_COOKIE_MAX_AGE_IN_DAYS = int(

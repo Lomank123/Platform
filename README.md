@@ -44,6 +44,15 @@ python manage.py runserver
 
 ## Utilities
 
+- Create superuser:
+
+```shell
+python manage.py createsuperuser --noinput
+```
+
+Note: Check superuser credentials in `.env` file.
+
+
 - To clear all blacklisted refresh tokens which have expired:
 
 ```shell
