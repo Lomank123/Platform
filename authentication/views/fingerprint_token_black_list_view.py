@@ -1,9 +1,11 @@
+from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.serializers import TokenBlacklistSerializer
 from rest_framework_simplejwt.views import TokenViewBase
 from django.conf import settings
 
 
 class FingerprintTokenBlackListView(TokenViewBase):
+    permission_classes = (IsAuthenticated,)
     serializer_class = TokenBlacklistSerializer
 
     def post(self, request, *args, **kwargs):

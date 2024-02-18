@@ -6,7 +6,7 @@ from users.serializers import MeSerializer
 
 
 class MeView(GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = (IsAuthenticated,)
     serializer_class = MeSerializer
 
     def get(self, request):

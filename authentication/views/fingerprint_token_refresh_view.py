@@ -26,6 +26,8 @@ class FingerprintTokenRefreshView(TokenViewBase):
                 code=status.HTTP_401_UNAUTHORIZED,
             )
 
+        # TODO: Change logic: receive outdated access token,
+        #  check fingerprint and only then update it
         fingerprint_service = FingerprintService()
         fingerprint_hash = fingerprint_service.calculate_fingerprint_hash(
             cookie_fingerprint
