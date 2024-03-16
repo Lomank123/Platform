@@ -39,4 +39,4 @@ class User(AbstractUser):
         ordering = ["-id"]
 
     def __str__(self):
-        return f"{self.email} ({self.pk})"
+        return f"{self.email} ({self.id})"
