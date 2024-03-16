@@ -4,6 +4,12 @@
 Unified User Platform - Service which provides authentication to other products.
 
 
+## Prerequisites
+
+- Python 3.11+
+- Docker
+
+
 ## Installation
 
 - Create `.env` file and copy the content of `.env.example` to it (don't forget to change env variables):
@@ -29,16 +35,10 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-- Run migrations:
+- Build and start Docker containers:
 
 ```shell
-python manage.py migrate
-```
-
-- Start the server:
-
-```shell
-python manage.py runserver
+docker compose up -d --build
 ```
 
 
@@ -47,7 +47,7 @@ python manage.py runserver
 - Create superuser:
 
 ```shell
-python manage.py createsuperuser --noinput
+docker compose exec platform python manage.py createsuperuser --noinput
 ```
 
 Note: Check superuser credentials in `.env` file.
@@ -56,6 +56,6 @@ Note: Check superuser credentials in `.env` file.
 - To clear all blacklisted refresh tokens which have expired:
 
 ```shell
-python manage.py flushexpiredtokens
+docker compose exec platform python manage.py flushexpiredtokens
 ```
 
